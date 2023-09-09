@@ -26,10 +26,21 @@ steps:
       - git remote add origin $DRONE_GIT_SSH_URL
       - git fetch --no-tags --prune --no-recurse-submodules origin $DRONE_COMMIT_BRANCH
       - git checkout $DRONE_COMMIT
+  - name: build
+    image: node:lts-alpine
+    depends_on:
+      - clone
+    commands:
+      - corepack enable
+      - corepack prepare pnpm@latest-8 --activate
+      - pnpm -v
+      - pnpm install
+      - pnpm run build
+      - pnpm remove -D
   - name: build_docker
     image: plugins/docker
     depends_on:
-      - clone
+      - build
     pull: if-not-exists
     settings:
       registry: hub.ccw.es
