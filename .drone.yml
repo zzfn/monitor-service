@@ -51,7 +51,7 @@ steps:
         from_secret: nexus_docker_username
       password:
         from_secret: nexus_docker_password
-      repo: hub.ccw.es/home/blog
+      repo: hub.ccw.es/home/monitor-service
       tags:
         - ${DRONE_COMMIT_SHA:0:8}
         - latest
@@ -69,5 +69,5 @@ steps:
       port: 22
       command_timeout: 2m
       script:
-        - kubectl apply -f https://git.ccw.es/ccw/yaml/raw/branch/master/monitor-status.yaml
-        - kubectl set image deployment/monitor-status monitor-status=hub.ccw.es/home/monitor-status:${DRONE_COMMIT_SHA:0:8}
+        - kubectl apply -f https://git.ccw.es/ccw/yaml/raw/branch/master/monitor-service.yaml
+        - kubectl set image deployment/monitor-service monitor-service=hub.ccw.es/home/monitor-service:${DRONE_COMMIT_SHA:0:8}
