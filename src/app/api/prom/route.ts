@@ -11,7 +11,7 @@ type JsonType = {
     result: Array<ResultType>
 }
 
-export async function GET() {
+export async function POST() {
     const url = new URL(`${process.env.PROM_URL}/api/v1/query_range`);
     const start = Date.now() / 1000 - 60 * 60 * 24
     const end = Date.now() / 1000

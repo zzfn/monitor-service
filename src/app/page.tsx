@@ -8,7 +8,7 @@ type MetricType = {
   name: string;
   values: Array<[number, string]>;
 };
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+const fetcher = (url: string) => fetch(url,{method:'post'}).then((r) => r.json());
 
 function calculateAvailability(values: Array<[number, string]>) {
   const totalAvailability = values.reduce((acc, [_, percentageStr]) => {
