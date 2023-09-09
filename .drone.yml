@@ -39,7 +39,7 @@ steps:
       - pnpm -v
       - pnpm install
       - pnpm run build
-      - pnpm remove -D
+      - pnpm prune --prod
   - name: build_docker
     image: plugins/docker
     depends_on:
