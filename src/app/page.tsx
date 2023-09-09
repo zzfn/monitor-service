@@ -62,7 +62,10 @@ export default function Home() {
           </div>
         ))}
       </main>
-      <footer className="text-center py-10">By wawama</footer>
+      <footer className="text-center py-10">
+          <p>By wawama</p>
+          <p className='text-sm text-gray-700'>{dayjs().format('YYYY-MM-DD HH:mm:ss')}</p>
+      </footer>
     </div>
   );
 }
