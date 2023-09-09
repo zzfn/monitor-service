@@ -28,6 +28,9 @@ steps:
       - git checkout $DRONE_COMMIT
   - name: build
     image: node:lts-alpine
+    environment:
+      PROM_URL:
+        from_secret: PROM_URL
     depends_on:
       - clone
     commands:
