@@ -1,14 +1,42 @@
-"use client";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import Image from "next/image";
-import useSWR from "swr";
 
 type MetricType = {
   name: string;
   values: Array<[number, string]>;
 };
-const fetcher = (url: string) => fetch(url,{method:'post'}).then((r) => r.json());
+type ResultType = {
+  metric: {
+    name: string;
+  };
+  values: Array<[number, string]>;
+};
+type JsonType = {
+  resultType: string;
+  result: Array<ResultType>;
+};
+const fetcher = async (): Promise<Array<MetricType>> => {
+  const url = new URL(`${process.env.PROM_URL}/api/v1/query_range`);
+  const start = Date.now() / 1000 - 60 * 60 * 24;
+  const end = Date.now() / 1000;
+  const step = 60 * 60;
+  url.searchParams.set("query", "avg_over_time(up{monitor='true'}[1h]) * 100");
+  url.searchParams.set("start", start.toString());
+  url.searchParams.set("end", end.toString());
+  url.searchParams.set("step", step.toString());
+  const res = await fetch(url.toString(),{ cache: 'no-store' });
+  const { data }: { data: JsonType } = await res.json();
+  return data.result.map((ins) => {
+    return {
+      name: ins.metric.name,
+      values: ins.values.map(([time, score]: [number, string]) => [
+        time * 1000,
+        score,
+      ]),
+    };
+  });
+};
 
 function calculateAvailability(values: Array<[number, string]>) {
   const totalAvailability = values.reduce((acc, [_, percentageStr]) => {
@@ -19,8 +47,8 @@ function calculateAvailability(values: Array<[number, string]>) {
   return parseFloat(averageAvailability.toFixed(2));
 }
 
-export default function Home() {
-  const { data = [] } = useSWR<MetricType[]>("/api/prom", fetcher);
+export default async function Home() {
+  const data = await fetcher();
 
   return (
     <div className="min-h-screen max-w-3xl mx-auto">
@@ -63,8 +91,10 @@ export default function Home() {
         ))}
       </main>
       <footer className="text-center py-10">
-          <p>By wawama</p>
-          <p className='text-sm text-gray-700'>{dayjs().format('YYYY-MM-DD HH:mm:ss')}</p>
+        <p>By wawama</p>
+        <p className="text-sm text-gray-700">
+          {dayjs().format("YYYY-MM-DD HH:mm:ss")}
+        </p>
       </footer>
     </div>
   );
