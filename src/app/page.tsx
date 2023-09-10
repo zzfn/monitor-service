@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import dayjs from "dayjs";
 import Image from "next/image";
+import Time from "@/app/_components/Time";
 
 type MetricType = {
   name: string;
@@ -93,7 +94,7 @@ export default async function Home() {
       <footer className="text-center py-10">
         <p>By wawama</p>
         <p className="text-sm text-gray-700">
-          {dayjs().format("YYYY-MM-DD HH:mm:ss")}
+          <Time time={Date.now()}/>
         </p>
       </footer>
     </div>
