@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import dayjs from "dayjs";
 import Image from "next/image";
-import Time from "@/app/_components/Time";
 
 type MetricType = {
   name: string;
@@ -50,7 +49,6 @@ function calculateAvailability(values: Array<[number, string]>) {
 
 export default async function Home() {
   const data = await fetcher();
-
   return (
     <div className="min-h-screen max-w-3xl mx-auto">
       <header className="flex justify-between items-center w-full bg-gradient-to-b backdrop-blur-2xl h-20">
@@ -94,7 +92,7 @@ export default async function Home() {
       <footer className="text-center py-10">
         <p>By wawama</p>
         <p className="text-sm text-gray-700">
-          <Time time={Date.now()}/>
+          {dayjs().format("YYYY-MM-DD HH:mm:ss")}
         </p>
       </footer>
     </div>
