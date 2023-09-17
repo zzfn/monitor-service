@@ -25,6 +25,7 @@ const fetcher = async (): Promise<Array<MetricType>> => {
   url.searchParams.set("start", start.toString());
   url.searchParams.set("end", end.toString());
   url.searchParams.set("step", step.toString());
+  console.log(url.toString());
   const res = await fetch(url.toString(),{ cache: 'no-store' });
   const { data }: { data: JsonType } = await res.json();
   return data.result.map((ins) => {

@@ -46,12 +46,12 @@ steps:
       - build
     pull: if-not-exists
     settings:
-      registry: hub.ccw.es
+      registry: hub.ooxo.cc
       username:
         from_secret: nexus_docker_username
       password:
         from_secret: nexus_docker_password
-      repo: hub.ccw.es/home/monitor-service
+      repo: hub.ooxo.cc/home/monitor-service
       tags:
         - ${DRONE_COMMIT_SHA:0:8}
         - latest
@@ -84,5 +84,5 @@ steps:
       port: 22
       command_timeout: 2m
       script:
-        - kubectl apply -f https://git.ccw.es/ccw/yaml/raw/branch/master/monitor-service.yaml
-        - kubectl set image deployment/monitor-service monitor-service=hub.ccw.es/home/monitor-service:${DRONE_COMMIT_SHA:0:8}
+        - kubectl apply -f https://git.ooxo.cc/ccw/yaml/raw/branch/master/monitor-service.yaml
+        - kubectl set image deployment/monitor-service monitor-service=hub.ooxo.cc/home/monitor-service:${DRONE_COMMIT_SHA:0:8}
